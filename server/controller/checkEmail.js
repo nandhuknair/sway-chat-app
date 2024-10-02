@@ -1,30 +1,29 @@
-const UserModel = require("../models/UserModel");
+const UserModel = require("../models/UserModel")
 
-async function checkEmail(req, res) {
-  try {
-    const { email } = req.body;
+async function checkEmail(request,response){
+    try {
+        const { email } = request.body
+        const checkEmail = await UserModel.findOne({email}).select("-password")
 
-    const checkEmail = await UserModel.findOne({ email }).select("-password");
+        if(!checkEmail){
+            return response.status(400).json({
+                message : "user not exit",
+                error : true
+            })
+        }
 
-    if (!checkEmail) {
-      return res.status(400).json({
-        message: "User not exist please signup",
-        error: true,
-      });
+        return response.status(200).json({
+            message : "email verify",
+            success : true,
+            data : checkEmail
+        })
+
+    } catch (error) {
+        return response.status(500).json({
+            message : error.message || error,
+            error : true
+        })
     }
-
-    return res.status(200).json({
-      message: "Email verified",
-      esuccess: true,
-      data: checkEmail,
-    });
-
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message || error,
-      error: true,
-    });
-  }
 }
 
 module.exports = checkEmail

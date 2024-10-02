@@ -1,19 +1,19 @@
-const bcrypt = require("bcryptjs");
 const UserModel = require("../models/UserModel");
-const { response } = require("express");
+const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-async function checkPassword(req, res) {
+async function checkPassword(request, response) {
   try {
-    const { password, userId } = req.body;
+    const { password, userId } = request.body;
 
     const user = await UserModel.findById(userId);
 
-    const verifryPassword = await bcrypt.compare(password, user.password);
+    const verifyPassword = await bcryptjs.compare(password, user.password);
 
-    if (!verifryPassword) {
-      return res.status(400).json({
-        message: "Wrong password",
+    if (!verifyPassword) {
+      return response.status(400).json({
+        message: "Please check password",
         error: true,
       });
     }
@@ -32,18 +32,17 @@ async function checkPassword(req, res) {
       secure: true,
     };
 
-    return response.cookie('token',token,cookieOptions).status(200).json({
+    return response.cookie("token", token, cookieOptions).status(200).json({
       message: "Login successfully",
       token: token,
       success: true,
     });
   } catch (error) {
-    return res.status(500).json({
+    return response.status(500).json({
       message: error.message || error,
       error: true,
     });
   }
 }
 
-
-module.exports = checkPassword
+module.exports = checkPassword;
