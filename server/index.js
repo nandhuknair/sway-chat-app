@@ -9,6 +9,7 @@ const {app, server}  = require('./socket/index')
 
 app.use(cors({
     origin:process.env.FRONTEND_URL,
+    methods: ["POST","GET"],
     credentials:true
 }))
 
