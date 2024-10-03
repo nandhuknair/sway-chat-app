@@ -23,7 +23,13 @@ export default function Component() {
     const URL = `${process.env.REACT_APP_BACKEND_URL}/api/email`;
 
     try {
-      const response = await axios.post(URL, { email: email });
+      const response = await axios.post(URL, { email: email },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
       console.log("response", response);
       toast.success(response?.data?.message);
 
