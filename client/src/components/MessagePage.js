@@ -233,6 +233,7 @@ const MessagePage = () => {
                 accept="video/*"
               />
             </div>
+
             <input
               type="text"
               placeholder="Type your message..."
@@ -268,7 +269,6 @@ const MessagePage = () => {
             {message.videoUrl && (
               <video src={message.videoUrl} controls className="w-full rounded-lg" />
             )}
-            {/* New Send Button Inside Modal */}
             <div className="flex justify-end mt-4">
               <button
                 onClick={handleSendMessage}
