@@ -17,18 +17,12 @@ app.use((req, res, next) => {
   next();
 });
 
-const corsOptions = {
+app.use(cors({
   origin: process.env.FRONTEND_URL,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ["POST", "GET", "PUT", "DELETE"],
   credentials: true,
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-
-app.use(cors(corsOptions));
-
-// Handle preflight requests
-app.options('*', cors(corsOptions));
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Explicitly allow 'Content-Type' and 'Authorization'
+}));
 
 app.use(express.json())
 app.use(cookiesParser())
